@@ -1,5 +1,8 @@
 ## Flake type annotations plugin
 
+[![Python Version](https://img.shields.io/pypi/pyversions/flake-type-annotations-plugin.svg)](https://pypi.org/project/flake-type-annotations-plugin/)
+[![PyPI version](https://badge.fury.io/py/flake-type-annotations-plugin.svg)](https://pypi.org/project/flake-type-annotations-plugin/)
+
 The `flake8` plugin checking for correct usage of the Python type annotations.
 
 ## Installation
