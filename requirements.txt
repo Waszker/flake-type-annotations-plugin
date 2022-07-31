@@ -1,0 +1,4 @@
+black
+flake8
+flake-type-annotations-plugin
+pytest

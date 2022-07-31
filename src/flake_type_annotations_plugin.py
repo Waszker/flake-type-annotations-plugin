@@ -137,18 +137,18 @@ class GenericTypesVisitor(ast.NodeVisitor):
         if not isinstance(annotate_node, ast.Subscript):
             return False
 
-        union_used_in_node_name = (
+        invalid_annotation_used_in_node_name = (
             isinstance(annotate_node.value, ast.Name)
             and annotate_node.value.id in self._non_generic_names
         )
-        if union_used_in_node_name:
+        if invalid_annotation_used_in_node_name:
             return True
 
-        union_used_in_node_attr = (
+        invalid_annotation_used_in_node_attr = (
             isinstance(annotate_node.value, ast.Attribute)
             and annotate_node.value.attr in self._non_generic_names
         )
-        if union_used_in_node_attr:
+        if invalid_annotation_used_in_node_attr:
             return True
 
         return self._has_invalid_keyword_been_used(
