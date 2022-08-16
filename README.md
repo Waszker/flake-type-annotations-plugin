@@ -2,8 +2,12 @@
 
 [![Python Version](https://img.shields.io/pypi/pyversions/flake-type-annotations-plugin.svg)](https://pypi.org/project/flake-type-annotations-plugin/)
 [![PyPI version](https://badge.fury.io/py/flake-type-annotations-plugin.svg)](https://pypi.org/project/flake-type-annotations-plugin/)
+[![PyPI - License](https://img.shields.io/pypi/l/flake8-annotations?color=magenta)](https://github.com/sco1/flake8-annotations/blob/master/LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-black)](https://github.com/psf/black)
 
 The `flake8` plugin checking for correct usage of the Python type annotations.
+
+Use with [flake8-annotations](https://pypi.org/project/flake8-annotations/) for even better results!
 
 ## Installation
 
@@ -15,7 +19,7 @@ pip install flake-type-annotations-plugin
 
 ## Rules
 
-### `ANN001`
+### `TAN001`
 
 This rule disallows usage of `Union` and `Optional` type annotations and expects user 
 to use the new `|` operator syntax.
@@ -26,7 +30,7 @@ Example:
 # WRONG
 from typing import Optional, Union
 
-def func(arg: Optional[int]) -> Union[int, str]:  # violates ANN001
+def func(arg: Optional[int]) -> Union[int, str]:  # violates TAN001
     return arg if arg is not None else "N/A"
 
 # CORRECT
@@ -40,7 +44,7 @@ syntax.
 
 More can be read in [PEP604](https://peps.python.org/pep-0604/).
 
-### `ANN002`
+### `TAN002`
 
 This rule disallows usage of type annotations where built-in types can be used.
 
@@ -50,7 +54,7 @@ Example:
 # WRONG
 from typing import List, Tuple
 
-def func(arg: Tuple[int]) -> List[int]:  # violates ANN002
+def func(arg: Tuple[int]) -> List[int]:  # violates TAN002
     return list(arg)
 
 # CORRECT

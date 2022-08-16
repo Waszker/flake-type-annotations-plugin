@@ -16,7 +16,7 @@ setup(
     description="flake8 plugin for type annotations",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    version="0.0.1",
+    version="0.1.0",
     license="MIT",
     author="Piotr Waszkiewicz",
     author_email="waszka23@gmail.com",
@@ -43,7 +43,7 @@ setup(
     install_requires=requires,
     entry_points={
         "flake8.extension": [
-            "ANN = flake_type_annotations_plugin:TypeAnnotationsPlugin",
+            "TAN = flake_type_annotations_plugin:TypeAnnotationsPlugin",
         ],
     },
     project_urls={
