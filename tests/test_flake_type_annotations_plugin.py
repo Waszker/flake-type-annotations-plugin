@@ -22,5 +22,5 @@ def test_plugin_properly_detects_errors() -> None:
     )
     stdout, _ = process.communicate()
 
-    assert b"tests/fixtures/invalid_flake_file.py:7:5: ANN001:" in stdout
-    assert b"tests/fixtures/invalid_flake_file.py:11:21: ANN002:" in stdout
+    assert b"tests/fixtures/invalid_flake_file.py:7:5: TAN001:" in stdout
+    assert b"tests/fixtures/invalid_flake_file.py:11:21: TAN002:" in stdout

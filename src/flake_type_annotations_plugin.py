@@ -3,9 +3,9 @@ from __future__ import annotations
 import ast
 from typing import Any, Generator, Tuple, Type
 
-ANN001 = "ANN001: Use `|` instead of `Union` or `Optional`."
-ANN002 = (
-    "ANN002: Use built-in generics instead of typing implementations "
+TAN001 = "TAN001: Use `|` instead of `Union` or `Optional`."
+TAN002 = (
+    "TAN002: Use built-in generics instead of typing implementations "
     + "(e.g. list instead of `List`)."
 )
 
@@ -41,25 +41,25 @@ class UnionTypingVisitor(ast.NodeVisitor):
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         """Checks function annotations."""
         if self._has_union_been_used(node, node.returns):
-            self.errors += [(node.lineno, node.col_offset, ANN001)]
+            self.errors += [(node.lineno, node.col_offset, TAN001)]
         self.generic_visit(node)
 
     def visit_arg(self, node: ast.arg) -> None:
         """Checks arguments annotations."""
         if self._has_union_been_used(node, node.annotation):
-            self.errors += [(node.lineno, node.col_offset, ANN001)]
+            self.errors += [(node.lineno, node.col_offset, TAN001)]
         self.generic_visit(node)
 
     def visit_Assign(self, node: ast.Assign) -> None:
         """Checks assignment annotations."""
         if self._has_union_been_used(node, node.value):
-            self.errors += [(node.lineno, node.col_offset, ANN001)]
+            self.errors += [(node.lineno, node.col_offset, TAN001)]
         self.generic_visit(node)
 
     def visit_AnnAssign(self, node: ast.AnnAssign) -> None:
         """Checks variable type annotations."""
         if self._has_union_been_used(node, node.annotation):
-            self.errors += [(node.lineno, node.col_offset, ANN001)]
+            self.errors += [(node.lineno, node.col_offset, TAN001)]
         self.generic_visit(node)
 
     def _has_union_been_used(
@@ -108,25 +108,25 @@ class GenericTypesVisitor(ast.NodeVisitor):
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         """Checks function annotations."""
         if self._has_invalid_keyword_been_used(node, node.returns):
-            self.errors += [(node.lineno, node.col_offset, ANN002)]
+            self.errors += [(node.lineno, node.col_offset, TAN002)]
         self.generic_visit(node)
 
     def visit_arg(self, node: ast.arg) -> None:
         """Checks arguments annotations."""
         if self._has_invalid_keyword_been_used(node, node.annotation):
-            self.errors += [(node.lineno, node.col_offset, ANN002)]
+            self.errors += [(node.lineno, node.col_offset, TAN002)]
         self.generic_visit(node)
 
     def visit_Assign(self, node: ast.Assign) -> None:
         """Checks assignment annotations."""
         if self._has_invalid_keyword_been_used(node, node.value):
-            self.errors += [(node.lineno, node.col_offset, ANN002)]
+            self.errors += [(node.lineno, node.col_offset, TAN002)]
         self.generic_visit(node)
 
     def visit_AnnAssign(self, node: ast.AnnAssign) -> None:
         """Checks variable type annotations."""
         if self._has_invalid_keyword_been_used(node, node.annotation):
-            self.errors += [(node.lineno, node.col_offset, ANN002)]
+            self.errors += [(node.lineno, node.col_offset, TAN002)]
         self.generic_visit(node)
 
     def _has_invalid_keyword_been_used(
@@ -161,12 +161,12 @@ class TypeAnnotationsPlugin:
     """
     Plugin for flake8 checking for common type annotation mistakes.
 
-    ANN001 - disallows `Union` and `Optional` usages and encourages usage of
+    TAN001 - disallows `Union` and `Optional` usages and encourages usage of
              a new `|` operator syntax. The usage of the new syntax can be
              enabled in earlier versions (Python 3.7+) via the
              `from __future__ import annotations` import.
 
-    ANN002 - disallows usage of types where built-in alternative can be used,
+    TAN002 - disallows usage of types where built-in alternative can be used,
              e.g. `List[]` instead of `list[]`, etc. The support for usage of
              generics in typing syntax has been added in Python 3.9, and is now
              the preferred way of annotating types. The usage of the new syntax
