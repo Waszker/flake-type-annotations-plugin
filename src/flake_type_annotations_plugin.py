@@ -13,22 +13,6 @@ VisitorError = Tuple[int, int, str]
 PluginErrorInfo = Tuple[int, int, str, Type[Any]]
 
 
-def get_slice_expr(node: ast.Subscript) -> ast.expr:
-    """
-    Get slice expression from the subscript in all versions of python.
-
-    It was changed in ``python3.9``.
-
-    Before: ``ast.Subscript`` -> ``ast.Index`` -> ``ast.expr``
-    After: ``ast.Subscript`` -> ``ast.expr``
-    """
-    return (
-        node.slice.value  # type: ignore
-        if isinstance(node.slice, ast.Index)
-        else node.slice
-    )
-
-
 class UnionTypingVisitor(ast.NodeVisitor):
     """AST-based visitor that checks for usage of Union and Optional."""
 
