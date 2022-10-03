@@ -1,0 +1,5 @@
+[flake8:local-plugins]
+extension =
+    TAN = flake_type_annotations_plugin:TypeAnnotationsPlugin
+paths =
+  ./src
