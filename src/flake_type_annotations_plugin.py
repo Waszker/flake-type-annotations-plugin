@@ -41,8 +41,8 @@ class UnionTypingVisitor(ast.NodeVisitor):
     def visit_Subscript(self, node: ast.Subscript) -> None:
         """Checks subscript annotations."""
         union_used = (
-                isinstance(node.value, ast.Name)
-                and node.value.id in self._union_names
+            isinstance(node.value, ast.Name)
+            and node.value.id in self._union_names
         )
         if union_used:
             self.errors += [(node.lineno, node.col_offset, TAN001)]
@@ -67,8 +67,8 @@ class GenericTypesVisitor(ast.NodeVisitor):
     def visit_Subscript(self, node: ast.Subscript) -> None:
         """Checks subscript annotations."""
         invalid_keyword_used = (
-                isinstance(node.value, ast.Name)
-                and node.value.id in self._non_generic_names
+            isinstance(node.value, ast.Name)
+            and node.value.id in self._non_generic_names
         )
         if invalid_keyword_used:
             self.errors += [(node.lineno, node.col_offset, TAN002)]

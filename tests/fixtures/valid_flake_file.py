@@ -3,8 +3,7 @@ from __future__ import annotations
 
 def function(*args: list[int | None]) -> None:
     formatted_args: list[str | int] = [
-        arg if arg is not None else "blank"
-        for arg in args
+        arg if arg is not None else "blank" for arg in args
     ]
     print(formatted_args)
 

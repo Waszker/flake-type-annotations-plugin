@@ -6,8 +6,7 @@ SomeOtherType = Union[List[int], List[str]]
 
 def function(*args: List[Optional[int]]) -> None:
     formatted_args: List[Union[str, int]] = [
-        arg if arg is not None else "blank"
-        for arg in args
+        arg if arg is not None else "blank" for arg in args
     ]
     print(formatted_args)
 
