@@ -38,56 +38,15 @@ class UnionTypingVisitor(ast.NodeVisitor):
         """Initializes visitor with an empty errors list."""
         self.errors: list[VisitorError] = []
 
-    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
-        """Checks function annotations."""
-        if self._has_union_been_used(node, node.returns):
-            self.errors += [(node.lineno, node.col_offset, TAN001)]
-        self.generic_visit(node)
-
-    def visit_arg(self, node: ast.arg) -> None:
-        """Checks arguments annotations."""
-        if self._has_union_been_used(node, node.annotation):
-            self.errors += [(node.lineno, node.col_offset, TAN001)]
-        self.generic_visit(node)
-
-    def visit_Assign(self, node: ast.Assign) -> None:
-        """Checks assignment annotations."""
-        if self._has_union_been_used(node, node.value):
-            self.errors += [(node.lineno, node.col_offset, TAN001)]
-        self.generic_visit(node)
-
-    def visit_AnnAssign(self, node: ast.AnnAssign) -> None:
-        """Checks variable type annotations."""
-        if self._has_union_been_used(node, node.annotation):
-            self.errors += [(node.lineno, node.col_offset, TAN001)]
-        self.generic_visit(node)
-
-    def _has_union_been_used(
-        self,
-        node: ast.FunctionDef | ast.arg | ast.Assign | ast.AnnAssign,
-        annotate_node: ast.expr | None,
-    ) -> bool:
-        if not isinstance(annotate_node, ast.Subscript):
-            return False
-
-        union_used_in_node_name = (
-            isinstance(annotate_node.value, ast.Name)
-            and annotate_node.value.id in self._union_names
+    def visit_Subscript(self, node: ast.Subscript) -> None:
+        """Checks subscript annotations."""
+        union_used = (
+                isinstance(node.value, ast.Name)
+                and node.value.id in self._union_names
         )
-        if union_used_in_node_name:
-            return True
-
-        union_used_in_node_attr = (
-            isinstance(annotate_node.value, ast.Attribute)
-            and annotate_node.value.attr in self._union_names
-        )
-        if union_used_in_node_attr:
-            return True
-
-        return self._has_union_been_used(
-            node,
-            get_slice_expr(annotate_node),
-        )
+        if union_used:
+            self.errors += [(node.lineno, node.col_offset, TAN001)]
+        self.generic_visit(node)
 
 
 class GenericTypesVisitor(ast.NodeVisitor):
@@ -105,56 +64,15 @@ class GenericTypesVisitor(ast.NodeVisitor):
         """Initializes visitor with an empty errors list."""
         self.errors: list[VisitorError] = []
 
-    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
-        """Checks function annotations."""
-        if self._has_invalid_keyword_been_used(node, node.returns):
-            self.errors += [(node.lineno, node.col_offset, TAN002)]
-        self.generic_visit(node)
-
-    def visit_arg(self, node: ast.arg) -> None:
-        """Checks arguments annotations."""
-        if self._has_invalid_keyword_been_used(node, node.annotation):
-            self.errors += [(node.lineno, node.col_offset, TAN002)]
-        self.generic_visit(node)
-
-    def visit_Assign(self, node: ast.Assign) -> None:
-        """Checks assignment annotations."""
-        if self._has_invalid_keyword_been_used(node, node.value):
-            self.errors += [(node.lineno, node.col_offset, TAN002)]
-        self.generic_visit(node)
-
-    def visit_AnnAssign(self, node: ast.AnnAssign) -> None:
-        """Checks variable type annotations."""
-        if self._has_invalid_keyword_been_used(node, node.annotation):
-            self.errors += [(node.lineno, node.col_offset, TAN002)]
-        self.generic_visit(node)
-
-    def _has_invalid_keyword_been_used(
-        self,
-        node: ast.FunctionDef | ast.arg | ast.Assign | ast.AnnAssign,
-        annotate_node: ast.expr | None,
-    ) -> bool:
-        if not isinstance(annotate_node, ast.Subscript):
-            return False
-
-        invalid_annotation_used_in_node_name = (
-            isinstance(annotate_node.value, ast.Name)
-            and annotate_node.value.id in self._non_generic_names
+    def visit_Subscript(self, node: ast.Subscript) -> None:
+        """Checks subscript annotations."""
+        invalid_keyword_used = (
+                isinstance(node.value, ast.Name)
+                and node.value.id in self._non_generic_names
         )
-        if invalid_annotation_used_in_node_name:
-            return True
-
-        invalid_annotation_used_in_node_attr = (
-            isinstance(annotate_node.value, ast.Attribute)
-            and annotate_node.value.attr in self._non_generic_names
-        )
-        if invalid_annotation_used_in_node_attr:
-            return True
-
-        return self._has_invalid_keyword_been_used(
-            node,
-            get_slice_expr(annotate_node),
-        )
+        if invalid_keyword_used:
+            self.errors += [(node.lineno, node.col_offset, TAN002)]
+        self.generic_visit(node)
 
 
 class TypeAnnotationsPlugin:

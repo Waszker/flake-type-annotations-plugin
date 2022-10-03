@@ -1,4 +1,15 @@
-from typing import List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
+
+SomeType = Dict[str, Union[int, str]]
+SomeOtherType = Union[List[int], List[str]]
+
+
+def function(*args: List[Optional[int]]) -> None:
+    formatted_args: List[Union[str, int]] = [
+        arg if arg is not None else "blank"
+        for arg in args
+    ]
+    print(formatted_args)
 
 
 class Foo:
